@@ -1,0 +1,10 @@
+.wrapper{
+    position: relative;
+    &::after{
+        display: block;
+        content: "";
+        clear: both;
+    }
+
+}
+
