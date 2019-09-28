@@ -1,7 +1,5 @@
 const express = require('express');
 const chalk = require('chalk');
-const debug = require('debug')('app');
-const morgan = require('morgan');
 const path = require('path');
 const popper = require('popper.js')
 
@@ -18,7 +16,6 @@ app.use(express.urlencoded({
     extended: true
 }));
 app.use(express.json());
-app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, '/public/')))
 app.use('/js', express.static(path.join(__dirname, '/node_modules/bootstrap/dist/js')))
 app.use('/js', express.static(path.join(__dirname, '/node_modules/jquery/dist/')))
@@ -44,5 +41,5 @@ app.get('*', (req, res) => {
 
 
 app.listen(PORT, () => {
-    debug(`Listening at localhost${chalk.green(PORT)}`)
+    console.log(`Listening at localhost${chalk.green(PORT)}`)
 })

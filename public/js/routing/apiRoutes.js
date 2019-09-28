@@ -1,12 +1,12 @@
-const data = require('../../../app/data/friends.js')
+const people = require('../../../app/data/friends.js')
 
 
 module.exports = (app)=>{
    
    
 app.get('/api/friends', (req, res) => {
-    console.log(data)
-    return res.json(data);
+    console.log(people)
+    return res.json(people);
 
 
 })
@@ -14,25 +14,48 @@ app.get("/api/friends/:user", function (req, res) {
     var displayFriend = req.params.user.toLowerCase();
 
 
-    console.log(data)
-    for (var i = 0; i < data.length; i++) {
-        if (displayFriend === data[i].firstName) {
-            return res.json(data[i]);
+    console.log(people)
+    for (var i = 0; i < people.length; i++) {
+        if (displayFriend === people[i].firstName) {
+            return res.json(people[i]);
         }
     }
     return res.json(false);
 })
 
-app.post("/api/friends", function(req, res) {
-    // Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
-    // It will do this by sending out the value "true" have a table
-    // req.body is available since we're using the body parsing middleware
-    if (data) {
-      data.push(req.body);
-      res.json(true);
+app.post("/api/survey", function(req, res) {
+
+  var newF = req.body;
+  var found = false;
+  var tempDiff = 41;
+  var bestMatch = {
+    name: "",
+    photo: "",
+    scores: []
+  };
+
+  for (let i = 0; i < people.length; i++) {
+    if (newF.firstName === people[i].name) {
+      found = true;
+      people[i].photo = newF.imageLink;
+      people[i].scores = newF.score;
+    } else {
+      var totalDifference = 0;
+      for (let j = 0; j < people[i].scores.length; j++) {
+        totalDifference += Math.abs(people[i].scores[j] - newF.score[j]);
+      }
+      if (totalDifference < tempDiff) {
+        tempDiff = totalDifference;
+        bestMatch = people[i];
+      }
     }
-    else {
-      alert("Please enter name")
-    }
-  });
+  }
+
+  if (!found) {
+    people.push(newF);
+  }
+
+  res.json(bestMatch);
+
+});
 }

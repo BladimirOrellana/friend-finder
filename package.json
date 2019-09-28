@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "sass": "node-sass public/sass/main.scss public/css/style.css -w",
-    "start": "DEBUG=app nodemon index.js",
+    "start": "nodemon index.js",
     "watch": "node index.js"
   },
   "repository": {
